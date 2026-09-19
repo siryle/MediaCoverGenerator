@@ -1,6 +1,6 @@
 services:
   mediacovergenerator:
-    image: ghcr.io/a39908646/mediacovergenerator:latest
+    image: ghcr.io/siryle/mediacovergenerator:latest
     pull_policy: always
     container_name: mediacovergenerator
     hostname: mediacovergenerator

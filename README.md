@@ -446,7 +446,7 @@ data/config.json
 `compose.yaml` 默认使用：
 
 - 容器名：`mediacovergenerator`
-- 镜像名：`ghcr.io/a39908646/mediacovergenerator:latest`
+- 镜像名：`ghcr.io/siryle/mediacovergenerator:latest`
 
 ## 11. 项目目录说明
 
