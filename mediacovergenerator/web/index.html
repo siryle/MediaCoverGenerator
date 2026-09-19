@@ -1943,7 +1943,6 @@
       document.getElementById("panelSettings").classList.toggle("active", state.activeTab === "settings");
       document.getElementById("panelJobs").classList.toggle("active", state.activeTab === "jobs");
       document.getElementById("panelHistory").classList.toggle("active", state.activeTab === "history");
-      document.querySelector(".floating-actions").style.display = state.activeTab === "settings" ? "" : "none";
       renderSettingsNavigation();
     }
 
