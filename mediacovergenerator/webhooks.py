@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hmac
 import threading
 from dataclasses import dataclass
 from pathlib import Path
@@ -63,7 +64,9 @@ class EmbyWebhookManager:
         if not config.webhook.enabled:
             raise PermissionError("Webhook monitoring is disabled")
         expected_token = (config.webhook.token or "").strip()
-        if expected_token and token != expected_token:
+        if not expected_token:
+            raise PermissionError("Webhook Token is not configured")
+        if not token or not hmac.compare_digest(token, expected_token):
             raise ValueError("Invalid webhook token")
 
     def _resolve_payload(self, config: AppConfig, payload: dict[str, Any]) -> WebhookResolution:

@@ -799,18 +799,569 @@
         margin-left: 0;
       }
     }
+
+    /* Workbench refresh: restrained surfaces, clearer hierarchy, and compact controls. */
+    :root {
+      --bg: #f5f6f8;
+      --panel: #ffffff;
+      --line: #e3e6eb;
+      --text: #181c25;
+      --muted: #697386;
+      --brand: #2563eb;
+      --brand-dark: #1d4ed8;
+      --ok: #16835d;
+      --warn: #b45309;
+      --floating-actions-space: 0px;
+    }
+
+    body {
+      background: var(--bg);
+      min-height: 100vh;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    .wrap {
+      max-width: 1440px;
+      padding: 0 28px 48px;
+    }
+
+    .app-header {
+      min-height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      flex: 0 0 34px;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: #181c25;
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .brand h1 {
+      margin: 0;
+      color: var(--text);
+      font-size: 17px;
+      font-weight: 750;
+      letter-spacing: 0;
+      line-height: 1.25;
+    }
+
+    .brand p {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.25;
+    }
+
+    .header-tools,
+    .account-area,
+    .floating-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .account-area {
+      padding-left: 14px;
+      margin-left: 6px;
+      border-left: 1px solid var(--line);
+    }
+
+    .account-name {
+      max-width: 150px;
+      overflow: hidden;
+      color: var(--muted);
+      font-size: 13px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .app-layout {
+      display: grid;
+      grid-template-columns: 190px minmax(0, 1fr);
+      gap: 32px;
+      padding-top: 28px;
+    }
+
+    .page-tabs {
+      position: sticky;
+      top: 22px;
+      display: grid;
+      align-content: start;
+      gap: 4px;
+      margin: 0;
+    }
+
+    .tab-button {
+      width: 100%;
+      padding: 10px 12px;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--muted);
+      text-align: left;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .tab-button:hover {
+      background: #eceff3;
+      color: var(--text);
+    }
+
+    .tab-button.active {
+      background: #e8efff;
+      color: #1d4ed8;
+    }
+
+    .app-content {
+      min-width: 0;
+    }
+
+    .stack {
+      gap: 16px;
+    }
+
+    .panel {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: 0 1px 2px rgba(24, 28, 37, 0.03);
+      backdrop-filter: none;
+    }
+
+    .panel h2 {
+      font-size: 16px;
+      letter-spacing: 0;
+    }
+
+    .fields {
+      gap: 16px;
+    }
+
+    label {
+      margin-bottom: 7px;
+      color: #384152;
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    input,
+    select,
+    textarea,
+    .custom-select-button {
+      border: 1px solid #d8dce3;
+      border-radius: 6px;
+      background: #ffffff;
+      color: var(--text);
+      box-shadow: none;
+    }
+
+    input,
+    select,
+    textarea {
+      padding: 10px 11px;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus,
+    .custom-select-button:focus-visible {
+      outline: 3px solid rgba(37, 99, 235, 0.14);
+      border-color: var(--brand);
+    }
+
+    .custom-select-button {
+      padding: 10px 42px 10px 11px;
+    }
+
+    .custom-select-menu {
+      padding: 4px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      box-shadow: 0 10px 22px rgba(24, 28, 37, 0.12);
+      backdrop-filter: none;
+    }
+
+    .custom-select-option {
+      border-radius: 5px;
+      color: var(--text);
+    }
+
+    .custom-select-option:hover,
+    .custom-select-option.selected {
+      background: #eef3ff;
+      color: #1d4ed8;
+    }
+
+    button {
+      width: auto;
+      padding: 10px 14px;
+      border-radius: 6px;
+      background: var(--brand);
+      box-shadow: none;
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    button:hover:not(:disabled) {
+      background: var(--brand-dark);
+    }
+
+    button.secondary,
+    .floating-save {
+      background: #ffffff;
+      color: #384152;
+      border: 1px solid #d8dce3;
+    }
+
+    button.secondary:hover:not(:disabled),
+    .floating-save:hover:not(:disabled) {
+      background: #f4f6f8;
+      color: var(--text);
+    }
+
+    .floating-actions {
+      position: static;
+      gap: 8px;
+    }
+
+    .floating-actions button {
+      min-width: auto;
+      padding: 9px 12px;
+      border-radius: 6px;
+      box-shadow: none;
+    }
+
+    .floating-save.dirty,
+    .floating-generate {
+      background: var(--brand);
+      color: #ffffff;
+      border-color: var(--brand);
+      box-shadow: none;
+    }
+
+    .toolbar,
+    .library-actions,
+    .mini-actions {
+      gap: 8px;
+    }
+
+    .toolbar button,
+    .library-actions button,
+    .mini-actions button,
+    .mini-actions a {
+      padding: 8px 10px;
+      border-radius: 6px;
+    }
+
+    .status-banner {
+      margin: 14px 0 0;
+      padding: 11px 12px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #f8fafc;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+    }
+
+    .item,
+    .library-config-row,
+    .style-group {
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #ffffff;
+      box-shadow: none;
+    }
+
+    .item,
+    .library-config-row {
+      padding: 14px;
+    }
+
+    .job-errors {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border: 1px solid #f3c8c8;
+      border-radius: 6px;
+      background: #fff7f7;
+      color: #9f2d2d;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .job-errors strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .job-errors ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .style-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .style-card {
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #ffffff;
+      box-shadow: none;
+    }
+
+    .style-card:hover {
+      transform: none;
+      border-color: #b7c6e7;
+      box-shadow: 0 4px 12px rgba(24, 28, 37, 0.06);
+    }
+
+    .style-card.active {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.12);
+    }
+
+    .style-card-body {
+      padding: 11px;
+    }
+
+    .style-group {
+      padding: 15px;
+    }
+
+    .style-group h3 {
+      font-size: 14px;
+    }
+
+    .badge {
+      margin-left: 6px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: #eef3ff;
+      color: #1d4ed8;
+      font-size: 11px;
+    }
+
+    .section-toggle {
+      padding: 2px 0;
+    }
+
+    .action-notice {
+      right: 24px;
+      bottom: 24px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #ffffff;
+      box-shadow: 0 12px 28px rgba(24, 28, 37, 0.12);
+    }
+
+    .auth-shell {
+      display: grid;
+      min-height: 100vh;
+      place-items: center;
+      padding: 24px;
+      background: #f5f6f8;
+    }
+
+    .auth-card {
+      width: min(100%, 400px);
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      box-shadow: 0 18px 45px rgba(24, 28, 37, 0.08);
+    }
+
+    .auth-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 28px;
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 750;
+    }
+
+    .auth-card h1 {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+
+    .auth-card > p {
+      margin: 8px 0 22px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .auth-form {
+      display: grid;
+      gap: 15px;
+    }
+
+    .auth-form button {
+      width: 100%;
+      margin-top: 4px;
+    }
+
+    .auth-message {
+      min-height: 20px;
+      margin: 0;
+      color: var(--warn);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 800px) {
+      .wrap {
+        padding: 0 18px 32px;
+      }
+
+      .app-header {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 16px 0;
+      }
+
+      .header-tools {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .app-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding-top: 20px;
+      }
+
+      .page-tabs {
+        position: static;
+        display: flex;
+        overflow-x: auto;
+        padding-bottom: 2px;
+      }
+
+      .tab-button {
+        width: auto;
+        flex: 0 0 auto;
+      }
+
+      .style-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 560px) {
+      .account-area {
+        padding-left: 8px;
+        margin-left: 0;
+      }
+
+      .account-name {
+        display: none;
+      }
+
+      .header-tools {
+        gap: 6px;
+      }
+
+      .floating-actions button,
+      .account-area button {
+        padding: 9px 10px;
+      }
+
+      .style-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .auth-card {
+        padding: 22px;
+      }
+    }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
-    <h1>MediaCoverGenerator</h1>
-    <p class="lead">Emby媒体库封面生成</p>
-    <div class="tabs page-tabs">
+  <section id="authGate" class="auth-shell" hidden>
+    <div class="auth-card">
+      <div class="auth-brand"><span class="brand-mark" aria-hidden="true">MC</span><span>Media Cover</span></div>
+      <h1 id="authTitle">登录</h1>
+      <p id="authDescription">使用管理员账号进入封面工作台。</p>
+      <form id="authForm" class="auth-form" novalidate>
+        <div>
+          <label for="authUsername">用户名</label>
+          <input id="authUsername" autocomplete="username" maxlength="64" required>
+        </div>
+        <div>
+          <label for="authPassword">密码</label>
+          <input id="authPassword" type="password" autocomplete="current-password" minlength="10" required>
+        </div>
+        <div id="authPasswordConfirmGroup" hidden>
+          <label for="authPasswordConfirm">确认密码</label>
+          <input id="authPasswordConfirm" type="password" autocomplete="new-password" minlength="10">
+        </div>
+        <p id="authMessage" class="auth-message" role="alert"></p>
+        <button id="authSubmit" type="submit">登录</button>
+      </form>
+    </div>
+  </section>
+
+  <div id="appShell" class="wrap" hidden>
+    <header class="app-header">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">MC</span>
+        <div>
+          <h1>Media Cover</h1>
+          <p>Emby 媒体库封面工作台</p>
+        </div>
+      </div>
+      <div class="header-tools">
+        <div class="floating-actions">
+          <button id="saveConfig" class="floating-save" type="button">已保存</button>
+          <button id="generateAll" class="floating-generate" type="button">生成封面</button>
+        </div>
+        <div class="account-area">
+          <span id="authUser" class="account-name"></span>
+          <button id="logoutButton" class="secondary" type="button">退出</button>
+        </div>
+      </div>
+    </header>
+    <div class="app-layout">
+      <nav class="tabs page-tabs" aria-label="工作台导航">
       <button class="tab-button active" id="tabSettings" type="button">设置</button>
       <button class="tab-button" id="tabJobs" type="button">任务管理</button>
       <button class="tab-button" id="tabHistory" type="button">历史管理</button>
-    </div>
+      </nav>
+      <main class="app-content">
 
     <div id="panelSettings" class="tab-panel active">
       <div class="stack">
@@ -832,7 +1383,7 @@
               </div>
               <div>
                 <label for="apiKey">Emby API Key</label>
-                <input id="apiKey" placeholder="api key">
+                <input id="apiKey" type="password" autocomplete="off" placeholder="api key">
                 <div class="hint">用于读取媒体库和回写封面。</div>
               </div>
               <div>
@@ -875,6 +1426,14 @@
                   </div>
                   <div class="hint">媒体入库后自动刷新对应媒体库封面。延迟用于等待 Emby 完成扫描、刮削和图片生成，建议先从 `60` 秒开始。</div>
                 </div>
+              </div>
+              <div class="full-span">
+                <label for="webhookToken">Webhook Token</label>
+                <div class="inline-action">
+                  <input id="webhookToken" autocomplete="off" spellcheck="false" placeholder="启用入库监控时必填">
+                  <button class="secondary" id="generateWebhookToken" type="button">生成 Token</button>
+                </div>
+                <div class="hint">Token 会附在 Webhook 地址中，用于验证 Emby 的请求。</div>
               </div>
               <div class="full-span">
                 <label for="webhookUrlDisplay">Webhook 地址</label>
@@ -1057,11 +1616,10 @@
       </section>
     </div>
 
-    <div id="actionNotice" class="action-notice"></div>
-    <div class="floating-actions">
-      <button id="saveConfig" class="floating-save" type="button">已保存</button>
-      <button id="generateAll" class="floating-generate" type="button">生成封面</button>
+      </main>
     </div>
+
+    <div id="actionNotice" class="action-notice"></div>
   </div>
   <script>
     const state = {
@@ -1077,9 +1635,12 @@
       librarySectionOpen: false,
       activeTab: "settings",
       dirty: false,
-      generating: false
+      generating: false,
+      authenticated: false,
+      authConfigured: false
     };
     let noticeTimer = null;
+    let refreshTimer = null;
     const STYLE_META = {
       static_1: {
         index: 1,
@@ -1119,8 +1680,12 @@
     async function api(path, options = {}) {
       const response = await fetch(path, {
         headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
         ...options,
       });
+      if (response.status === 401 && !path.startsWith("/auth/")) {
+        showAuthentication(state.authConfigured, "登录状态已失效，请重新登录。");
+      }
       if (!response.ok) {
         const type = response.headers.get("content-type") || "";
         if (type.includes("application/json")) {
@@ -1133,6 +1698,104 @@
       }
       const type = response.headers.get("content-type") || "";
       return type.includes("application/json") ? response.json() : response.text();
+    }
+
+    function setAuthMessage(message = "") {
+      document.getElementById("authMessage").textContent = message;
+    }
+
+    function showAuthentication(configured, message = "") {
+      state.authenticated = false;
+      state.authConfigured = configured;
+      if (refreshTimer) {
+        clearInterval(refreshTimer);
+        refreshTimer = null;
+      }
+      const setup = !configured;
+      document.getElementById("appShell").hidden = true;
+      document.getElementById("authGate").hidden = false;
+      document.getElementById("authTitle").textContent = setup ? "创建管理员账号" : "登录";
+      document.getElementById("authDescription").textContent = setup
+        ? "首次访问，请创建管理员账号。密码至少需要 10 个字符。"
+        : "使用管理员账号进入封面工作台。";
+      document.getElementById("authSubmit").textContent = setup ? "创建并进入" : "登录";
+      document.getElementById("authPasswordConfirmGroup").hidden = !setup;
+      document.getElementById("authPasswordConfirm").required = setup;
+      document.getElementById("authPassword").autocomplete = setup ? "new-password" : "current-password";
+      setAuthMessage(message);
+      window.setTimeout(() => document.getElementById("authUsername").focus(), 0);
+    }
+
+    async function openWorkspace(username) {
+      state.authenticated = true;
+      document.getElementById("authUser").textContent = username || "管理员";
+      document.getElementById("authGate").hidden = true;
+      document.getElementById("appShell").hidden = false;
+      await initializeWorkspace();
+      if (refreshTimer) clearInterval(refreshTimer);
+      refreshTimer = window.setInterval(() => {
+        if (state.authenticated) {
+          refresh().catch(() => undefined);
+        }
+      }, 5000);
+    }
+
+    async function submitAuthentication(event) {
+      event.preventDefault();
+      const setup = !state.authConfigured;
+      const username = document.getElementById("authUsername").value.trim();
+      const password = document.getElementById("authPassword").value;
+      const passwordConfirm = document.getElementById("authPasswordConfirm").value;
+      if (setup && password !== passwordConfirm) {
+        setAuthMessage("两次输入的密码不一致");
+        return;
+      }
+
+      const submitButton = document.getElementById("authSubmit");
+      submitButton.disabled = true;
+      setAuthMessage("");
+      try {
+        const response = await fetch(setup ? "/auth/setup" : "/auth/login", {
+          method: "POST",
+          credentials: "same-origin",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+        });
+        if (!response.ok) {
+          const payload = await response.json().catch(() => null);
+          throw new Error(payload?.detail || "登录失败，请稍后重试");
+        }
+        const result = await response.json();
+        state.authConfigured = true;
+        document.getElementById("authPassword").value = "";
+        document.getElementById("authPasswordConfirm").value = "";
+        await openWorkspace(result.username);
+      } catch (error) {
+        setAuthMessage(error.message || "登录失败，请稍后重试");
+      } finally {
+        submitButton.disabled = false;
+      }
+    }
+
+    async function logout() {
+      await fetch("/auth/logout", { method: "POST", credentials: "same-origin" }).catch(() => undefined);
+      showAuthentication(true);
+    }
+
+    async function bootstrapAuthentication() {
+      try {
+        const response = await fetch("/auth/status", { credentials: "same-origin" });
+        if (!response.ok) throw new Error("无法读取认证状态");
+        const status = await response.json();
+        state.authConfigured = Boolean(status.configured);
+        if (status.authenticated) {
+          await openWorkspace(status.username);
+          return;
+        }
+        showAuthentication(state.authConfigured);
+      } catch (error) {
+        showAuthentication(true, error.message || "无法连接到服务");
+      }
     }
 
     function composeStyle(index) {
@@ -1195,7 +1858,18 @@
 
     function renderWebhookUrl() {
       const url = new URL("/webhooks/emby", window.location.origin);
+      const token = document.getElementById("webhookToken")?.value.trim() || state.config?.webhook?.token || "";
+      if (token) url.searchParams.set("token", token);
       document.getElementById("webhookUrlDisplay").value = url.toString();
+    }
+
+    function generateWebhookToken() {
+      const bytes = new Uint8Array(24);
+      window.crypto.getRandomValues(bytes);
+      const token = Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
+      document.getElementById("webhookToken").value = token;
+      renderWebhookUrl();
+      setDirty(true);
     }
 
     async function copyWebhookUrl() {
@@ -1498,6 +2172,7 @@
     function jobCard(job) {
       const canDelete = isJobDeletable(job);
       const checked = state.selectedJobIds.includes(job.id) ? "checked" : "";
+      const errors = Array.isArray(job.errors) ? job.errors.filter(Boolean) : [];
       const timestamps = [
         job.created_at ? `创建时间：${formatDateTime(job.created_at)}` : "",
         job.started_at ? `开始时间：${formatDateTime(job.started_at)}` : "",
@@ -1519,6 +2194,7 @@
           ${timestamps.map((line) => `<div class="meta">${line}</div>`).join("")}
           <div class="meta">目标媒体库: ${summarizeLibraryNames(job.library_names)}</div>
           <div class="meta">完成 ${job.completed_libraries}/${job.total_libraries}，失败 ${job.failed_libraries}</div>
+          ${errors.length ? `<div class="job-errors"><strong>失败原因</strong><ul>${errors.map((error) => `<li>${escapeHtml(error)}</li>`).join("")}</ul></div>` : ""}
           ${job.status === "running" ? `<div class="actions"><button class="secondary" onclick="cancelJob('${job.id}')">取消任务</button></div>` : ""}
           ${canDelete ? `<div class="actions"><button class="secondary" onclick="deleteJob('${job.id}')">删除记录</button></div>` : ""}
         </div>
@@ -1577,6 +2253,7 @@
       document.getElementById("scheduleCron").value = state.config.schedule.cron;
       document.getElementById("webhookEnabled").value = String(state.config.webhook.enabled);
       document.getElementById("webhookDelay").value = state.config.webhook.delay_seconds;
+      document.getElementById("webhookToken").value = state.config.webhook.token || "";
       renderStyleSelector();
       renderSortMeta();
       renderWebhookUrl();
@@ -1611,7 +2288,7 @@
       config.schedule.cron = document.getElementById("scheduleCron").value.trim() || "0 3 * * *";
       config.webhook.enabled = document.getElementById("webhookEnabled").value === "true";
       config.webhook.delay_seconds = Number.parseInt(document.getElementById("webhookDelay").value || "60", 10) || 60;
-      config.webhook.token = "";
+      config.webhook.token = document.getElementById("webhookToken").value.trim();
       config.selected_library_ids = [...state.selectedLibraryIds];
       if (state.libraries.length > 0) {
         config.library_titles = state.libraries.map((library) => ({
@@ -1846,11 +2523,15 @@
     document.getElementById("selectAllLibraries").addEventListener("click", selectAllLibraries);
     document.getElementById("clearAllLibraries").addEventListener("click", clearAllLibraries);
     document.getElementById("copyWebhookUrl").addEventListener("click", copyWebhookUrl);
+    document.getElementById("generateWebhookToken").addEventListener("click", generateWebhookToken);
+    document.getElementById("webhookToken").addEventListener("input", renderWebhookUrl);
     document.getElementById("basicSectionToggle").addEventListener("click", () => toggleBasicSection());
     document.getElementById("librarySectionToggle").addEventListener("click", () => toggleLibrarySection());
     document.getElementById("tabSettings").addEventListener("click", () => switchTab("settings"));
     document.getElementById("tabJobs").addEventListener("click", () => switchTab("jobs"));
     document.getElementById("tabHistory").addEventListener("click", () => switchTab("history"));
+    document.getElementById("logoutButton").addEventListener("click", logout);
+    document.getElementById("authForm").addEventListener("submit", submitAuthentication);
     window.deleteJob = deleteJob;
     window.deleteHistory = deleteHistory;
     window.toggleJobSelection = toggleJobSelection;
@@ -1870,7 +2551,7 @@
         setDirty(true);
       }
     });
-    async function init() {
+    async function initializeWorkspace() {
       await loadConfig();
       initCustomSelects();
       await Promise.all([loadHealth(), loadLibraries(), loadJobs(), loadHistory()]);
@@ -1881,8 +2562,7 @@
       renderGenerateState();
     }
 
-    init();
-    setInterval(refresh, 5000);
+    bootstrapAuthentication();
   </script>
 </body>
 

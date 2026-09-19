@@ -1,14 +1,17 @@
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 from fastapi import Body, FastAPI, Header, HTTPException, Query, Request
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
+from mediacovergenerator.auth import AuthenticationError, AuthenticationManager
 from mediacovergenerator.jobs import JobManager
 from mediacovergenerator.models import (
     AppConfig,
+    AuthCredentials,
     DeleteRequest,
     GenerateRequest,
     HealthResponse,
@@ -25,6 +28,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 config_repository = ConfigRepository(PROJECT_ROOT)
 history_repository = HistoryRepository(PROJECT_ROOT)
 webhook_repository = WebhookRepository(PROJECT_ROOT)
+auth_manager = AuthenticationManager(PROJECT_ROOT)
 job_manager = JobManager(PROJECT_ROOT, config_repository, history_repository)
 scheduler = AppScheduler(PROJECT_ROOT, config_repository, job_manager)
 webhook_manager = EmbyWebhookManager(PROJECT_ROOT, config_repository, job_manager)
@@ -35,6 +39,54 @@ app.mount(
     StaticFiles(directory=PROJECT_ROOT / "mediacovergenerator" / "assets" / "images"),
     name="images",
 )
+
+SESSION_COOKIE = "mcg_session"
+PUBLIC_PATHS = {"/", "/favicon.ico", "/webhooks/emby"}
+
+
+def _use_secure_cookie(request: Request) -> bool:
+    configured = os.getenv("MCG_COOKIE_SECURE", "").strip().lower()
+    if configured in {"1", "true", "yes"}:
+        return True
+    if configured in {"0", "false", "no"}:
+        return False
+    return request.url.scheme == "https"
+
+
+def _set_session_cookie(response: JSONResponse, request: Request, token: str) -> None:
+    response.set_cookie(
+        key=SESSION_COOKIE,
+        value=token,
+        max_age=auth_manager.session_max_age,
+        httponly=True,
+        secure=_use_secure_cookie(request),
+        samesite="lax",
+        path="/",
+    )
+
+
+@app.middleware("http")
+async def require_authenticated_session(request: Request, call_next):
+    path = request.url.path
+    if (
+        path in PUBLIC_PATHS
+        or path.startswith("/assets/")
+        or path.startswith("/auth/")
+    ):
+        response = await call_next(request)
+        if path.startswith("/auth/"):
+            response.headers["Cache-Control"] = "no-store"
+        return response
+
+    if not auth_manager.get_session_user(request.cookies.get(SESSION_COOKIE)):
+        return JSONResponse(
+            status_code=401,
+            content={"detail": "需要登录后才能访问"},
+            headers={"Cache-Control": "no-store"},
+        )
+    response = await call_next(request)
+    response.headers.setdefault("Cache-Control", "no-store")
+    return response
 
 
 @app.on_event("startup")
@@ -60,6 +112,47 @@ def favicon() -> FileResponse:
     )
 
 
+@app.get("/auth/status")
+def get_auth_status(request: Request) -> dict[str, object]:
+    username = auth_manager.get_session_user(request.cookies.get(SESSION_COOKIE))
+    return {
+        "configured": auth_manager.is_configured(),
+        "authenticated": bool(username),
+        "username": username or "",
+    }
+
+
+@app.post("/auth/setup")
+def setup_authentication(credentials: AuthCredentials, request: Request) -> JSONResponse:
+    try:
+        username = auth_manager.setup(credentials.username, credentials.password)
+    except AuthenticationError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    token = auth_manager.create_session(username)
+    response = JSONResponse(content={"username": username})
+    _set_session_cookie(response, request, token)
+    return response
+
+
+@app.post("/auth/login")
+def login(credentials: AuthCredentials, request: Request) -> JSONResponse:
+    username = auth_manager.authenticate(credentials.username, credentials.password)
+    if not username:
+        raise HTTPException(status_code=401, detail="用户名或密码错误")
+    token = auth_manager.create_session(username)
+    response = JSONResponse(content={"username": username})
+    _set_session_cookie(response, request, token)
+    return response
+
+
+@app.post("/auth/logout")
+def logout(request: Request) -> JSONResponse:
+    auth_manager.delete_session(request.cookies.get(SESSION_COOKIE))
+    response = JSONResponse(content={"ok": True})
+    response.delete_cookie(key=SESSION_COOKIE, path="/")
+    return response
+
+
 @app.get("/health", response_model=HealthResponse)
 def health() -> HealthResponse:
     config = config_repository.load()
@@ -82,6 +175,8 @@ def get_config() -> AppConfig:
 
 @app.put("/config", response_model=AppConfig)
 def put_config(config: AppConfig) -> AppConfig:
+    if config.webhook.enabled and not config.webhook.token.strip():
+        raise HTTPException(status_code=422, detail="启用入库监控时必须设置 Webhook Token")
     saved = config_repository.save(config)
     scheduler.reload()
     return saved

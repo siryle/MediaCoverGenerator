@@ -124,6 +124,13 @@ class DeleteRequest(BaseModel):
     ids: list[str] = Field(default_factory=list)
 
 
+class AuthCredentials(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    username: str
+    password: str
+
+
 class HistoryRecord(BaseModel):
     id: str
     server: str
